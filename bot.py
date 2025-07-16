@@ -1,3 +1,4 @@
+
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
@@ -21,7 +22,8 @@ async def handle_start(message: types.Message):
     partner = args if args else "unknown"
     referrals[partner].append((user.id, user.username or "no_username"))
     await bot.send_message(f"@{ADMIN_USERNAME}",
-        f"👤 Новый клиент от {partner}:\n@{user.username or 'без username'}")
+        f"👤 Новый клиент от {partner}:
+@{user.username or 'без username'}")
 
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(types.InlineKeyboardButton(
@@ -35,7 +37,8 @@ async def handle_start(message: types.Message):
 async def handle_stats(message: types.Message):
     partner = message.from_user.username
     records = referrals.get(partner, [])
-    text = f"📊 Ваша статистика:\nПереходов: {len(records)}"
+    text = f"📊 Ваша статистика:
+Переходов: {len(records)}"
     await message.answer(text)
 
 @dp.message_handler(commands=['admin'])
@@ -43,9 +46,11 @@ async def handle_admin(message: types.Message):
     if message.from_user.username != ADMIN_USERNAME:
         await message.answer("⛔ Нет доступа.")
         return
-    report = "📈 Общая статистика:\n"
+    report = "📈 Общая статистика:
+"
     for partner, users in referrals.items():
-        report += f"• {partner}: {len(users)} переходов\n"
+        report += f"• {partner}: {len(users)} переходов
+"
     await message.answer(report or "Пока нет переходов.")
 
 if __name__ == '__main__':
